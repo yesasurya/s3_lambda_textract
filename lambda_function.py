@@ -1,19 +1,18 @@
-import csv
 import json
 import boto3
-import base64
 
-from models.block_factory import BlockFactory
-from models.csv_builder import CsvBuilder
+from models.table_parser import TableParser
+from models.form_parser import FormParser
 from models.textract import Textract
+from models.csv_builder import CsvBuilder
 from sample_api_response import SAMPLE_API_RESPONSE
 from config import DEFAULT_REGION, S3_BUCKET_FOR_CSV
 
 
-def process_api_response(response):
-    block_factory = BlockFactory(response)
-    csv_builder = CsvBuilder(block_factory.page_block, block_factory.key_blocks)
-    return csv_builder.csv_content
+def process_textract_response(textract_response):
+    table_parser = TableParser(textract_response)
+    form_parser = FormParser(textract_response)
+    return table_parser.get_csv_lines(), form_parser.get_csv_lines()
 
 
 def lambda_handler(event, context):
@@ -35,15 +34,11 @@ def lambda_handler(event, context):
         textract_client = boto3.client('textract', region_name=DEFAULT_REGION)
         textract = Textract(textract_client)
         textract_response = textract.analyze_document(s3_object)
-        csv_content = process_api_response(textract_response)
+        table_csv_lines, form_csv_lines = process_textract_response(textract_response)
 
         s3_resource = boto3.resource('s3')
-        CsvBuilder.save_csv_to_s3(csv_content,
-            s3_resource=s3_resource, 
-            bucket_name=S3_BUCKET_FOR_CSV,
-            file_name='{0}.csv'.format(s3_object_name)
-        )
-
+        csv_builder = CsvBuilder(table_csv_lines, form_csv_lines)
+        csv_builder.save_csv_to_s3(s3_resource, S3_BUCKET_FOR_CSV, s3_object_name)
         message = '[SUCCESS] Successfully detect document\'s text.'
         
     print(message)
@@ -54,5 +49,6 @@ def lambda_handler(event, context):
 
 
 if __name__ == '__main__':
-    csv_content = process_api_response(SAMPLE_API_RESPONSE)
-    CsvBuilder.save_csv_to_local(csv_content, 'temp.csv')
+    table_csv_lines, form_csv_lines = process_textract_response(SAMPLE_API_RESPONSE)
+    csv_builder = CsvBuilder(table_csv_lines, form_csv_lines)
+    csv_builder.save_csv_to_local()
