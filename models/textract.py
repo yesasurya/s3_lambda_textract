@@ -10,7 +10,7 @@ class Textract:
         )
         return response
 
-    def textract_analyze_document(self, s3_object):
+    def analyze_document(self, s3_object):
         response = self.client.analyze_document(
             Document={
                 'S3Object': s3_object
