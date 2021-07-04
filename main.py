@@ -11,6 +11,7 @@ from sample_api_response import SAMPLE_API_RESPONSE
 def process_api_response(response):
     block_factory = BlockFactory(response)
     csv_builder = CsvBuilder(block_factory.page_block, block_factory.key_blocks)
+    print(csv_builder.csv_content)
 
 
 def lambda_handler(event, context):
@@ -32,8 +33,7 @@ def lambda_handler(event, context):
         textract_client = boto3.client('textract', region_name='us-east-1')
         textract = Textract(textract_client)
         textract_response = textract.analyze_document(s3_object)
-        textract_response = json.dumps(textract_response)
-        print(textract_response)
+        process_api_response(textract_response)
         message = 'Successfully detect document\'s text.'
         
     print(message)
@@ -44,8 +44,4 @@ def lambda_handler(event, context):
 
 
 if __name__ == '__main__':
-
-    print(csv_builder.csv_content)
-
-
-
+    process_api_response(SAMPLE_API_RESPONSE)
