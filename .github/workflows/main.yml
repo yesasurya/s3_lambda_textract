@@ -14,11 +14,19 @@ jobs:
         uses: montudor/action-zip@v0.1.0
         with:
           args: zip -qq -r ./bundle.zip ./
-      - name: Deploy to Lambda
+      - name: Deploy to Lambda at my own AWS account
         uses: appleboy/lambda-action@master
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-1
           function_name: my-textract-function
+          zip_file: bundle.zip
+      - name: Deploy to Lambda at Upwork-related AWS account
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.UPWORK_RELATED_AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.UPWORK_RELATED_AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: upwork-s3-event-handler
           zip_file: bundle.zip
