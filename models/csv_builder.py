@@ -40,13 +40,12 @@ class CsvBuilder():
                 writer.writerow([key, value])
 
     @staticmethod
-    def save_csv_to_s3(csv_content, s3_client, bucket_name, file_name):
-        with open('/tmp/temp.csv', 'w', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(['KEY', 'VALUE'])
-            for key, value in csv_content.items():
-                key = '{0}'.format(key)
-                value = '{0}'.format(value)
-                writer.writerow([key, value])
-        
-            s3_client.upload_file('/tmp/temp.csv', bucket_name, file_name)
+    def save_csv_to_s3(csv_content, s3_resource, bucket_name, file_name):
+        f = open('/tmp/temp.csv', 'w')
+        row_format = '{0}, {1}'
+        f.write(row_format.format('KEY', 'VALUE'))
+        for key, value in csv_content.items():
+            f.write(row_format.format(key, value))
+        f.close()
+
+        s3_resource.Bucket(bucket_name).upload_file('/tmp/temp.csv', file_name)

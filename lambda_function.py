@@ -36,9 +36,9 @@ def lambda_handler(event, context):
         textract_response = textract.analyze_document(s3_object)
         csv_content = process_api_response(textract_response)
 
-        s3_client = boto3.client('s3', region_name='us-east-1')
+        s3_resource = boto3.resource('s3')
         CsvBuilder.save_csv_to_s3(csv_content,
-            s3_client=s3_client, 
+            s3_resource=s3_resource, 
             bucket_name='my-example-textract-csv-bucket',
             file_name='{0}.csv'.format(s3_object_name)
         )
