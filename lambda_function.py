@@ -7,6 +7,7 @@ from models.block_factory import BlockFactory
 from models.csv_builder import CsvBuilder
 from models.textract import Textract
 from sample_api_response import SAMPLE_API_RESPONSE
+from config import DEFAULT_REGION, S3_BUCKET_FOR_CSV
 
 
 def process_api_response(response):
@@ -31,7 +32,7 @@ def lambda_handler(event, context):
             'Name': s3_object_name
         }
 
-        textract_client = boto3.client('textract', region_name='us-east-1')
+        textract_client = boto3.client('textract', region_name=DEFAULT_REGION)
         textract = Textract(textract_client)
         textract_response = textract.analyze_document(s3_object)
         csv_content = process_api_response(textract_response)
@@ -39,7 +40,7 @@ def lambda_handler(event, context):
         s3_resource = boto3.resource('s3')
         CsvBuilder.save_csv_to_s3(csv_content,
             s3_resource=s3_resource, 
-            bucket_name='my-example-textract-csv-bucket',
+            bucket_name=S3_BUCKET_FOR_CSV,
             file_name='{0}.csv'.format(s3_object_name)
         )
 
