@@ -42,8 +42,7 @@ class CsvBuilder():
     @staticmethod
     def save_csv_to_s3(csv_content, s3_resource, bucket_name, file_name):
         f = open('/tmp/temp.csv', 'w')
-        row_format = '{0}, {1}'
-        f.write(row_format.format('KEY', 'VALUE'))
+        row_format = '"{0}", "{1}"\n'
         for key, value in csv_content.items():
             f.write(row_format.format(key, value))
         f.close()
