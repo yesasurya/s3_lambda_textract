@@ -1,3 +1,6 @@
+import csv
+
+
 class CsvBuilder():
     def __init__(self, page_block, key_blocks):
         self.page_block = page_block
@@ -25,3 +28,15 @@ class CsvBuilder():
         for index in sorted_indexes:
             key_value_pair = unsorted_csv_context[index]
             self.csv_content.update(key_value_pair)
+
+    def save_csv_to_local(self):
+        pass
+
+    @staticmethod
+    def save_csv_to_s3(csv_content, s3_client, bucket_name, file_name):
+        temp_csv_file = csv.writer(open("/tmp/csv_file.csv", "w+"))
+        temp_csv_file.writerow(["KEY", "VALUE"])
+        for key, value in csv_content:
+            temp_csv_file.writerow([key, value])
+        
+        s3_client.upload_file('/tmp/csv_file.csv', bucket_name, file_name)
