@@ -4,12 +4,12 @@ from models.parser import Parser
 class FormParser(Parser):
     def __init__(self, textract_response):
         super().__init__(textract_response)
-        block_lines = self.dict_block_by_types['LINE']
+        block_lines = self.dict_block_by_types.get('LINE', [])
         line_texts = []
         for block_line in block_lines:
             line_texts.append(block_line.get('Text', ''))
         
-        block_key_values = self.dict_block_by_types['KEY_VALUE_SET']
+        block_key_values = self.dict_block_by_types.get('KEY_VALUE_SET', [])
         block_keys = []
         for block in block_key_values:
             entity_types = block.get('EntityTypes', [])

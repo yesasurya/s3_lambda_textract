@@ -7,7 +7,7 @@ class TableParser(Parser):
 
     def __init__(self, textract_response):
         super().__init__(textract_response)
-        block_tables = self.dict_block_by_types['TABLE']
+        block_tables = self.dict_block_by_types.get('TABLE', [])
         self.tables = []
         for block_table in block_tables:
             self.tables.append(self.__get_table_from_block_table(block_table))
