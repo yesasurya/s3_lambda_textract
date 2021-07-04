@@ -36,7 +36,7 @@ class CsvBuilder():
     def save_csv_to_s3(csv_content, s3_client, bucket_name, file_name):
         temp_csv_file = csv.writer(open("/tmp/csv_file.csv", "w+"))
         temp_csv_file.writerow(["KEY", "VALUE"])
-        for key, value in csv_content:
+        for key, value in csv_content.items():
             temp_csv_file.writerow([key, value])
         
         s3_client.upload_file('/tmp/csv_file.csv', bucket_name, file_name)
