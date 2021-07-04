@@ -1,6 +1,6 @@
-from block import Block
-from selection_element_block import SelectionElementBlock
-from word_block import WordBlock
+from models.blocks.block import Block
+from models.blocks.selection_element_block import SelectionElementBlock
+from models.blocks.word_block import WordBlock
 
 
 class ParentBlock(Block):

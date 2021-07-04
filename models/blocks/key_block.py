@@ -1,4 +1,4 @@
-from parent_block import ParentBlock
+from models.blocks.parent_block import ParentBlock
 
 
 class KeyBlock(ParentBlock):

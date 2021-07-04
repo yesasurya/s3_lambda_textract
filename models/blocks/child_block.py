@@ -1,4 +1,4 @@
-from block import Block
+from models.blocks.block import Block
 
 
 class ChildBlock(Block):

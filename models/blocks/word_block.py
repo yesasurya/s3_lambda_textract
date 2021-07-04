@@ -1,4 +1,4 @@
-from child_block import ChildBlock
+from models.blocks.child_block import ChildBlock
 
 
 class WordBlock(ChildBlock):

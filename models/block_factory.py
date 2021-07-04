@@ -1,9 +1,9 @@
-from blocks.page_block import PageBlock
-from blocks.line_block import LineBlock
-from blocks.key_block import KeyBlock
-from blocks.value_block import ValueBlock
-from blocks.selection_element_block import SelectionElementBlock
-from blocks.word_block import WordBlock
+from models.blocks.page_block import PageBlock
+from models.blocks.line_block import LineBlock
+from models.blocks.key_block import KeyBlock
+from models.blocks.value_block import ValueBlock
+from models.blocks.selection_element_block import SelectionElementBlock
+from models.blocks.word_block import WordBlock
 
 
 class BlockFactory:
