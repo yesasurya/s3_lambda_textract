@@ -17,6 +17,7 @@ class Textract:
             },
             FeatureTypes=[
                 'FORMS',
+                'TABLES'
             ],
         )
         return response
