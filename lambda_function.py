@@ -1,3 +1,4 @@
+import csv
 import json
 import boto3
 import base64
@@ -52,4 +53,5 @@ def lambda_handler(event, context):
 
 
 if __name__ == '__main__':
-    process_api_response(SAMPLE_API_RESPONSE)
+    csv_content = process_api_response(SAMPLE_API_RESPONSE)
+    CsvBuilder.save_csv_to_local(csv_content, 'temp.csv')
