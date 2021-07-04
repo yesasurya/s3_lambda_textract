@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             file_name='{0}.csv'.format(s3_object_name)
         )
 
-        message = 'Successfully detect document\'s text.'
+        message = '[SUCCESS] Successfully detect document\'s text.'
         
     print(message)
     return {
