@@ -46,7 +46,7 @@ def lambda_handler(event, context):
         s3_resource = boto3.resource('s3')
         csv_builder = CsvBuilder(table_csv_lines, form_csv_lines, line_csv_lines)
         csv_builder.save_csv_to_s3(s3_resource, S3_BUCKET_FOR_CSV, s3_object_name)
-        message = '[SUCCESS] Successfully detect document\'s text.'
+        message = '[SUCCESS] Successfully detect document\'s text from {0}'.format(s3_object_name)
         
     print(message)
     return {
