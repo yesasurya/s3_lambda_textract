@@ -38,7 +38,7 @@ class FormParser(Parser):
     def get_csv_lines(self):
         csv_lines = []
         for pair in self.sorted_pairs:
-            csv_line = '"{0}", "{1}"\n'.format(pair['key'], pair['value'])
+            csv_line = '{0}, {1}\n'.format(pair['key'], pair['value'])
             csv_lines.append(csv_line)
         return csv_lines
 

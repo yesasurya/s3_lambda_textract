@@ -21,7 +21,7 @@ class TableParser(Parser):
                 for col in range(TableParser.TABLE_MAX_COL):
                     text = table[row][col]
                     if text is not None:
-                        csv_line = csv_line + '"{0}", '.format(text)
+                        csv_line = csv_line + '{0}, '.format(text)
                 if csv_line != '':
                     csv_line = csv_line[:-2] + '\n'
                     csv_lines.append(csv_line)

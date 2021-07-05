@@ -1,4 +1,5 @@
 import json
+from models.line_parser import LineParser
 import boto3
 
 from models.table_parser import TableParser
@@ -6,13 +7,19 @@ from models.form_parser import FormParser
 from models.textract import Textract
 from models.csv_builder import CsvBuilder
 from sample_api_response import SAMPLE_API_RESPONSE
-from config import DEFAULT_REGION, S3_BUCKET_FOR_CSV
+from config import *
 
 
 def process_textract_response(textract_response):
-    table_parser = TableParser(textract_response)
-    form_parser = FormParser(textract_response)
-    return table_parser.get_csv_lines(), form_parser.get_csv_lines()
+    table_parser = TableParser(textract_response) if SHOULD_GENERATE_TABLE_DATA else None
+    form_parser = FormParser(textract_response) if SHOULD_GENERATE_FORM_DATA else None
+    line_parser = LineParser(textract_response) if SHOULD_GENERATE_LINE_DATA else None
+
+    table_csv_lines = table_parser.get_csv_lines() if table_parser is not None else None
+    form_csv_lines = form_parser.get_csv_lines() if form_parser is not None else None
+    line_csv_lines = line_parser.get_csv_lines() if line_parser is not None else None
+ 
+    return table_csv_lines, form_csv_lines, line_csv_lines
 
 
 def lambda_handler(event, context):
@@ -34,10 +41,10 @@ def lambda_handler(event, context):
         textract_client = boto3.client('textract', region_name=DEFAULT_REGION)
         textract = Textract(textract_client)
         textract_response = textract.analyze_document(s3_object)
-        table_csv_lines, form_csv_lines = process_textract_response(textract_response)
+        table_csv_lines, form_csv_lines, line_csv_lines = process_textract_response(textract_response)
 
         s3_resource = boto3.resource('s3')
-        csv_builder = CsvBuilder(table_csv_lines, form_csv_lines)
+        csv_builder = CsvBuilder(table_csv_lines, form_csv_lines, line_csv_lines)
         csv_builder.save_csv_to_s3(s3_resource, S3_BUCKET_FOR_CSV, s3_object_name)
         message = '[SUCCESS] Successfully detect document\'s text.'
         
