@@ -2,8 +2,8 @@ from models.parser import Parser
 
 
 class TableParser(Parser):
-    TABLE_MAX_ROW = 10
-    TABLE_MAX_COL = 10
+    TABLE_MAX_ROW = 100
+    TABLE_MAX_COL = 100
 
     def __init__(self, textract_response):
         super().__init__(textract_response)

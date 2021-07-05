@@ -6,7 +6,7 @@ from models.table_parser import TableParser
 from models.form_parser import FormParser
 from models.textract import Textract
 from models.csv_builder import CsvBuilder
-from sample_api_response import SAMPLE_API_RESPONSE
+from sample_api_response2 import SAMPLE_API_RESPONSE
 from config import *
 
 
