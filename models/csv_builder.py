@@ -51,4 +51,4 @@ class CsvBuilder():
                     f.write(line)
                 f.close()
                 line_csv_filename = 'data_line/{0}.csv'.format(file_name)
-                s3_resource.Bucket(bucket_name).upload_file('/tmp/line.csv', form_csv_filename)
+                s3_resource.Bucket(bucket_name).upload_file('/tmp/line.csv', line_csv_filename)
