@@ -13,5 +13,6 @@ class LineParser(Parser):
     def get_csv_lines(self):
         csv_lines = []
         for text in self.line_texts:
-            csv_lines.append(text)
+            csv_line = text + '\n'
+            csv_lines.append(csv_line)
         return csv_lines
